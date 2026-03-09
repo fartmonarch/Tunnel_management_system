@@ -20,7 +20,13 @@ const api = {
 	 */
 	getLine() {
 		return axios.get(`${base.baseUrl}${base.line}`);
-	}
+	},
+	/**
+	 * 读取隧道信息
+	 */
+	projectInfo(params) {
+		return axios.get(`${base.baseUrl}${base.projectInfo}`, { params });
+	},
 };
 
 export default api;

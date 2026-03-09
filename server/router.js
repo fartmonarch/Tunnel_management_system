@@ -81,4 +81,32 @@ router.get("/line", (req, res) => {
 	});
 });
 
+/**
+ * 隧道信息查询
+ */
+router.get("/project/all", (req, res) => {
+	// 分页功能
+	// parse是将url字符串转换成对象，第二个参数true表示将查询字符串转换成对象
+	// 如果不传第二个参数，查询字符串会被解析成字符串，需要自己手动解析
+	// req.url是请求的url字符串，例如/project/all?page=1&size=10
+	// url.parse()返回的对象中query属性就是查询字符串解析后的对象，例如{ page: '1', size: '10' }
+	var page = url.parse(req.url, true).query.page || 1;
+	const sql =
+		"select * from project order by id desc limit 15 offset " +
+		(page - 1) * 15;
+	SQLConnnect(sql, null, (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无信息",
+			});
+		}
+	});
+});
+
 module.exports = router;

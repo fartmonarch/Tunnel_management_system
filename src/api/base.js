@@ -6,6 +6,7 @@ const base = {
 	login: "/api/login", //登录接口
 	router: "/api/router", //用户权限
 	line: "/api/line", //echarts数据接口
+	projectInfo: "/api/project/all", //隧道信息获取接口
 };
 
 export default base;

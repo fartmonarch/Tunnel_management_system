@@ -2,6 +2,7 @@
  * echarts图表库
  */
 import * as echarts from "echarts";
+import china from "../assets/json/china.json";
 
 export default {
 	/* echarts挂载到Vue全局 */
@@ -153,6 +154,55 @@ export default {
 							130,
 						],
 						type: "bar",
+					},
+				],
+			};
+			myChart.setOption(option);
+		};
+		// 地图
+		app.config.globalProperties.$china = (element, data) => {
+			var myChart = echarts.init(document.getElementById(element));
+			// 注册地图
+			echarts.registerMap("china", china);
+			const option = {
+				// 鼠标点击弹窗
+				tooltip: {
+					triggerOn: "click", // 点击触发
+					enterable: true, // 是否出现弹框
+				},
+				visualMap: {
+					origin: "vertical",
+					type: "piecewise",
+					pieces: [
+						{ min: 0, max: 0, color: "#fff" },
+						{ min: 0, max: 10, color: "#fdfdcf" },
+						{ min: 10, max: 20, color: "#fe9e83" },
+						{ min: 20, max: 30, color: "#e55a4e" },
+						{ min: 30, max: 40, color: "#4f070d" },
+						{ min: 40, max: 100, color: "#ff0000" },
+					],
+				},
+				series: [
+					{
+						name: "中国地图",
+						type: "map",
+						map: "china",
+						roam: false, // 鼠标滚轮是否可以缩放
+						zoom: 1.2, // 默认地图的倍数
+						label: {
+							show: true, // 是否显示地图上的文本信息
+							fontSize: 8,
+						},
+						itemStyle: {
+							areaColor: "rgba(255,255,255,1)", //白色
+							borderColor: "rgba(0,0,0,0.2)", //边框颜色
+						},
+						data: [
+							{ name: "内蒙古", value: 10 },
+							{ name: "黑龙江", value: 20 },
+							{ name: "山东", value: 30 },
+							{ name: "河南", value: 40 },
+						],
 					},
 				],
 			};
