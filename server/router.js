@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 // 可以使用get
 const url = require("url");
-const SQLConnnect = require("./SQLConnect");
+const SQLConnect = require("./SQLConnect");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("./jwtSecret");
 const { permission } = require("process");
@@ -16,7 +16,7 @@ router.post("/login", (req, res) => {
 	const { username, password } = req.body;
 	// 连接数据库查询
 	const sql = "select * from user where username=? and password=?";
-	SQLConnnect(sql, [username, password], (result) => {
+	SQLConnect(sql, [username, password], (result) => {
 		if (result.length > 0) {
 			// 生成token
 			const token = jwt.sign(
@@ -94,7 +94,7 @@ router.get("/project/all", (req, res) => {
 	const sql =
 		"select * from project order by id desc limit 15 offset " +
 		(page - 1) * 15;
-	SQLConnnect(sql, null, (result) => {
+	SQLConnect(sql, null, (result) => {
 		if (result.length > 0) {
 			res.send({
 				status: 200,
@@ -104,6 +104,32 @@ router.get("/project/all", (req, res) => {
 			res.send({
 				status: 500,
 				msg: "暂无信息",
+			});
+		}
+	});
+});
+
+/**
+ * 模糊查询功能
+ */
+router.get("/project/search", (req, res) => {
+	// 接受参数：查询内容
+	const search = url.parse(req.url, true).query.search;
+	// 模糊查询sql语句编写
+	const sql =
+		"select * from project where concat(`name`,`address`,`remark`) like '%" +
+		search +
+		"%'";
+	SQLConnect(sql, null, (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
 			});
 		}
 	});

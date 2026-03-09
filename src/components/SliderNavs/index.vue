@@ -6,7 +6,7 @@
 
             <!-- 使用template来循环生成视图，不会增加页面结构 -->
             <template v-for="(item, index) in menuStore.menus" :key="index">
-                <el-sub-menu v-if="item.children">
+                <el-sub-menu v-if="item.children" :index="item.path">
                     <template #title>
                         <el-icon>
                             <component :is="item.icon" />
