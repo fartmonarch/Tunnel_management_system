@@ -197,4 +197,101 @@ router.get("/project/add", (req, res) => {
 	});
 });
 
+/**
+ * 隧道信息删除
+ */
+router.get("/project/del", (req, res) => {
+	var id = url.parse(req.url, true).query.id; //query是一个对象，包含了查询字符串中的参数，例如{id: '1'}
+	var sql = "delete from project where id=?";
+	// 删除语句返回的结果中affectedRows属性表示受影响的行数，如果大于0表示删除成功，否则表示删除失败
+	SQLConnect(sql, [id], (result) => {
+		if (result.affectedRows > 0) {
+			res.send({
+				status: 200,
+				msg: "删除成功",
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "删除失败",
+			});
+		}
+	});
+});
+
+/**
+ * 隧道数据预更新
+ */
+router.get("/project/update/pre", (req, res) => {
+	const id = url.parse(req.url, true).query.id;
+	const sql = "select * from project where id=?";
+	SQLConnect(sql, [id], (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				// result是一个数组 直接取里面的对象
+				result: result[0],
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "预更新失败",
+			});
+		}
+	});
+});
+
+/**
+ * 修改隧道
+ *
+ * restFull API
+ *     get
+ *     post
+ *     put
+ *     del
+ *     ...
+ */
+router.put("/project/update/:id", (req, res) => {
+	const id = req.params.id;
+	const {
+		name,
+		number,
+		money,
+		address,
+		duration,
+		startTime,
+		endTime,
+		quantity,
+		status,
+		remark,
+	} = req.body;
+	const sql =
+		"update project set name=?,number=?,money=?,address=?,duration=?,startTime=?,endTime=?,quantity=?,status=?,remark=? where id=?";
+	const arr = [
+		name,
+		number,
+		money,
+		address,
+		duration,
+		startTime,
+		endTime,
+		quantity,
+		status,
+		remark,
+		id,
+	];
+	SQLConnect(sql, arr, (result) => {
+		if (result.affectedRows > 0) {
+			res.send({
+				status: 200,
+				msg: "修改成功",
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "修改失败",
+			});
+		}
+	});
+});
 module.exports = router;

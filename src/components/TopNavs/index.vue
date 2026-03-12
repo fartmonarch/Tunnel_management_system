@@ -12,11 +12,25 @@
 
             <div class="toggle-menu-breadcrumb">
                 <el-breadcrumb separator="/">
-                    <el-breadcrumb-item>当前</el-breadcrumb-item>
+                    <el-breadcrumb-item>{{ $t("message.navs") }}</el-breadcrumb-item>
                     <el-breadcrumb-item>{{ menuStore.breadcrumb }}</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
-
+            <div class="lang">
+                <el-dropdown>
+                    <span class="el-dropdown-link">
+                        语言切换
+                        <el-icon class="el-icon--right">
+                            <arrow-down />
+                        </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-item @click="changeLang('zh')">中文</el-dropdown-item>
+                        <el-dropdown-item @click="changeLang('en')">英文</el-dropdown-item>
+                    </template>
+                </el-dropdown>
+            </div>
+            <!-- 下拉菜单 -->
             <div class="user">
                 <el-dropdown>
                     <span class="el-dropdown-link">
@@ -42,11 +56,12 @@
 </template>
 
 <script setup>
-
+import { useI18n } from 'vue-i18n'
 import { useLoginStore } from "@/stores/loginStore"
 import { useRouter } from "vue-router"
 import { useMenuStore } from "@/stores/menuStore"
 
+const { locale } = useI18n()  // 获取 locale 对象
 const loginStore = useLoginStore()
 const router = useRouter()
 const menuStore = useMenuStore()
@@ -70,6 +85,15 @@ const closeMenu = (flag) => {
 
 const openMenu = (flag) => {
     menuStore.isCollapse = flag
+}
+
+/**
+ * 切换语言
+ */
+const changeLang = (lang) => {
+    // 更新 i18n 的语言
+    locale.value = lang  // 如果是 'zh' 或 'en'
+    localStorage.setItem("lang", lang)
 }
 </script>
 
@@ -106,5 +130,11 @@ const openMenu = (flag) => {
     position: absolute;
     right: 20px;
     top: 20px;
+}
+
+.lang {
+    float: right;
+    margin-right: 120px;
+    margin-top: 5px;
 }
 </style>

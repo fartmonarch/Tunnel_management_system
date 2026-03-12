@@ -33,6 +33,8 @@
         </el-table-column>
 
         <el-table-column width="135" lable="操作">
+            <!-- #default="scope"是一个作用域插槽 -->
+            <!-- scope 是由 el-table 自动注入的对象，包含了当前行和列的相关信息 -->
             <template #default="scope">
                 <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
                     编辑
@@ -53,73 +55,42 @@
     <!-- 分页 end -->
     <!-- 添加对话框 start -->
     <el-dialog v-model="dialogAddVisible" title="添加隧道信息" width="35%" center>
-        <el-form :model="addFormInfo" label-width="80px">
-
-            <el-row :gutter="20">
-
-                <el-col :span="12">
-                    <el-form-item label="项目名称">
-                        <el-input v-model="addFormInfo.name" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="项目编码">
-                        <el-input v-model="addFormInfo.number" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="项目金额">
-                        <el-input v-model="addFormInfo.money" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="项目地址">
-                        <el-input v-model="addFormInfo.address" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="项目工期">
-                        <el-input v-model="addFormInfo.duration" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="开工时间">
-                        <el-date-picker v-model="addFormInfo.startTime" value-format="x" type="date"
-                            style="width:100%" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="终止时间">
-                        <el-date-picker v-model="addFormInfo.endTime" value-format="x" type="date" style="width:100%" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="隧道数量">
-                        <el-input v-model="addFormInfo.quantity" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="12">
-                    <el-form-item label="项目状态">
-                        <el-input v-model="addFormInfo.status" />
-                    </el-form-item>
-                </el-col>
-
-                <el-col :span="24">
-                    <el-form-item label="项目备注">
-                        <TinymceEditor :options="options" @onDataEvent="getInfoEditorHandler" />
-                    </el-form-item>
-                </el-col>
-
-            </el-row>
-
+        <el-form :inline="true" :model="addFormInfo">
+            <el-form-item label="项目名称">
+                <el-input v-model="addFormInfo.name" placeholder="请输入项目名称"></el-input>
+            </el-form-item>
+            <el-form-item label="项目编码">
+                <el-input v-model="addFormInfo.number" placeholder="请输入项目编码"></el-input>
+            </el-form-item>
+            <el-form-item label="项目金额">
+                <el-input v-model="addFormInfo.money" placeholder="请输入项目金额"></el-input>
+            </el-form-item>
+            <el-form-item label="项目地址">
+                <el-input v-model="addFormInfo.address" placeholder="请输入项目地址"></el-input>
+            </el-form-item>
+            <el-form-item label="项目工期">
+                <el-input v-model="addFormInfo.duration" placeholder="请输入项目工期"></el-input>
+            </el-form-item>
+            <el-form-item label="开工时间">
+                <!-- <el-input v-model="addFormInfo.startTime" placeholder="请输入开工时间"></el-input> -->
+                <el-date-picker value-format="x" v-model="addFormInfo.startTime" type="date" placeholder="请输入开工时间">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="终止时间">
+                <!-- <el-input v-model="addFormInfo.endTime" placeholder="请输入终止时间"></el-input> -->
+                <el-date-picker value-format="x" v-model="addFormInfo.endTime" type="date" placeholder="请输入终止时间">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="隧道数量">
+                <el-input v-model="addFormInfo.quantity" placeholder="请输入隧道数量"></el-input>
+            </el-form-item>
+            <el-form-item label="项目状态">
+                <el-input v-model="addFormInfo.status" placeholder="'1' 施工中  -  '0' 已完工"></el-input>
+            </el-form-item>
+            <el-form-item label="项目备注">
+                <!-- <el-input v-model="addFormInfo.remark" placeholder="请输入项目备注"></el-input> -->
+                <TinymceEditor :options="options" @onDataEvent="getInfoEditorHandler" />
+            </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
@@ -129,6 +100,52 @@
         </template>
     </el-dialog>
     <!-- 添加对话框 end -->
+    <!-- 编辑对话框 start -->
+    <!-- destory-on-close:关闭对话框，直接销毁对话框 -->
+    <el-dialog destroy-on-close v-model="dialogEditorVisible" title="编辑隧道信息" width="35%" center>
+        <el-form :inline="true" :model="editorFormInfo">
+            <el-form-item label="项目名称">
+                <el-input v-model="editorFormInfo.name"></el-input>
+            </el-form-item>
+            <el-form-item label="项目编码">
+                <el-input v-model="editorFormInfo.number"></el-input>
+            </el-form-item>
+            <el-form-item label="项目金额">
+                <el-input v-model="editorFormInfo.money"></el-input>
+            </el-form-item>
+            <el-form-item label="项目地址">
+                <el-input v-model="editorFormInfo.address"></el-input>
+            </el-form-item>
+            <el-form-item label="项目工期">
+                <el-input v-model="editorFormInfo.duration"></el-input>
+            </el-form-item>
+            <el-form-item label="开工时间">
+                <el-date-picker value-format="x" v-model="editorFormInfo.startTime" type="date">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="终止时间">
+                <el-date-picker value-format="x" v-model="editorFormInfo.endTime" type="date">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="隧道数量">
+                <el-input v-model="editorFormInfo.quantity"></el-input>
+            </el-form-item>
+            <el-form-item label="项目状态">
+                <el-input v-model="editorFormInfo.status"></el-input>
+            </el-form-item>
+            <el-form-item label="项目备注">
+                <TinymceEditor :editorID="editorID" :remark="editorFormInfo.remark" :options="options"
+                    @onDataEvent="updateEditorHandler" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogEditorVisible = false">取消</el-button>
+                <el-button type="primary" @click="sureEditorHandler">确定</el-button>
+            </span>
+        </template>
+    </el-dialog>
+    <!-- 编辑对话框 end -->
 </template>
 
 <script setup>
@@ -144,6 +161,9 @@ const searchInfo = ref('')
 const dialogAddVisible = ref(false)
 // 编辑对话框控制器
 const dialogEditorVisible = ref(false)
+
+// 定义修改数据的唯一ID
+const editorID = ref(0)
 
 //表单
 const projectInfo = reactive({
@@ -164,6 +184,20 @@ const addFormInfo = reactive({
     remark: ""
 })
 
+// 初始化编辑对话框状态
+const editorFormInfo = reactive({
+    name: "",
+    number: "",
+    money: "",
+    address: "",
+    duration: "",
+    startTime: "",
+    endTime: "",
+    quantity: "",
+    status: "",
+    remark: ""
+})
+
 //初始化总条数 
 const total = ref(0);
 
@@ -171,6 +205,7 @@ const total = ref(0);
 onMounted(() => {
     http(1)
 })
+
 // 初始获取总条数
 onMounted(() => {
     api.getTotal().then(res => {
@@ -199,7 +234,6 @@ const http = (page) => {
 /**
  * 搜索事件
  */
-
 const searchHandler = () => {
     api.getSearch({ search: searchInfo.value }).then(res => {
         if (res.data.status === 200) {
@@ -215,7 +249,6 @@ const searchHandler = () => {
 /**
  * 隧道标签文本
  */
-
 const statusHandle = (status) => {
     return status === '1' ? '施工中' : '已完工'
 }
@@ -287,6 +320,7 @@ const handleEdit = (index, row) => {
         console.log(error);
     })
 }
+
 /**
  * 表格 删除按钮
  */
@@ -362,6 +396,36 @@ const getInfoEditorHandler = (data) => {
  */
 const updateEditorHandler = (data) => {
     editorFormInfo.remark = data
+}
+
+/**
+ * 确认修改事件
+ */
+const sureEditorHandler = () => {
+    api.getUpdateProject(editorID.value, {
+        name: editorFormInfo.name,
+        number: editorFormInfo.number,
+        money: editorFormInfo.money,
+        address: editorFormInfo.address,
+        duration: editorFormInfo.duration,
+        startTime: editorFormInfo.startTime,
+        endTime: editorFormInfo.endTime,
+        quantity: editorFormInfo.quantity,
+        status: editorFormInfo.status,
+        remark: editorFormInfo.remark  // 富文本编辑器中的数据
+    }).then(res => {
+        if (res.data.status === 200) {
+            dialogEditorVisible.value = false;
+            ElMessage({
+                message: '编辑成功',
+                type: 'success',
+            })
+            http(1)
+        } else {
+            ElMessage.error(res.data.msg)
+        }
+    })
+
 }
 
 </script>

@@ -96,14 +96,14 @@ onMounted(() => {
     // 初始化 tinymce
     tinymce.init({})
     // 数据显示处理
-    // textContent.value = props.remark
-    // api.getPreProject({ id: props.editorID }).then(res => {
-    //     if (res.data.status === 200) {
-    //         textContent.value = res.data.result.remark
-    //     }
-    // }).catch(error => {
-    //     console.log(error);
-    // })
+    textContent.value = props.remark
+    api.getPreProject({ id: props.editorID }).then(res => {
+        if (res.data.status === 200) {
+            textContent.value = res.data.result.remark
+        }
+    }).catch(error => {
+        console.log(error);
+    })
 })
 
 watch(textContent, (newValue, oldValue) => {

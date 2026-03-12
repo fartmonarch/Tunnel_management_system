@@ -45,6 +45,24 @@ const api = {
 	getAddProject(params) {
 		return axios.get(`${base.baseUrl}${base.addProject}`, { params });
 	},
+	/**
+	 * 删除隧道接口
+	 */
+	getDelProject(params) {
+		return axios.get(`${base.baseUrl}${base.delProject}`, { params });
+	},
+	/**
+	 * 隧道预更新接口
+	 */
+	getPreProject(params) {
+		return axios.get(`${base.baseUrl}${base.preProject}`, { params });
+	},
+	/**
+	 * 隧道更新接口
+	 */
+	getUpdateProject(id, params) {
+		return axios.put(`${base.baseUrl}${base.updateProject}${id}`, params);
+	},
 };
 
 export default api;
