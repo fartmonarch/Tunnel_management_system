@@ -33,6 +33,18 @@ const api = {
 	getSearch(params) {
 		return axios.get(`${base.baseUrl}${base.search}`, { params });
 	},
+	/**
+	 * 模糊查询
+	 */
+	getTotal() {
+		return axios.get(`${base.baseUrl}${base.total}`);
+	},
+	/**
+	 * 添加隧道接口
+	 */
+	getAddProject(params) {
+		return axios.get(`${base.baseUrl}${base.addProject}`, { params });
+	},
 };
 
 export default api;

@@ -135,4 +135,66 @@ router.get("/project/search", (req, res) => {
 	});
 });
 
+/**
+ * 获得总页数
+ */
+router.get("/project/total", (req, res) => {
+	const sql = "select count(*) as total from project";
+	SQLConnect(sql, null, (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
+			});
+		}
+	});
+});
+
+/**
+ * 隧道添加
+ */
+router.get("/project/add", (req, res) => {
+	var name = url.parse(req.url, true).query.name || "";
+	var number = url.parse(req.url, true).query.number || "";
+	var money = url.parse(req.url, true).query.money || "";
+	var address = url.parse(req.url, true).query.address || "";
+	var duration = url.parse(req.url, true).query.duration || "";
+	var startTime = url.parse(req.url, true).query.startTime || "";
+	var endTime = url.parse(req.url, true).query.endTime || "";
+	var quantity = url.parse(req.url, true).query.quantity || "";
+	var status = url.parse(req.url, true).query.status || "";
+	var remark = url.parse(req.url, true).query.remark || "";
+	const sql = "insert into project values (null,?,?,?,?,?,?,?,?,?,?)";
+	const arr = [
+		name,
+		number,
+		money,
+		address,
+		duration,
+		startTime,
+		endTime,
+		quantity,
+		status,
+		remark,
+	];
+	SQLConnect(sql, arr, (result) => {
+		if (result.affectedRows > 0) {
+			res.send({
+				status: 200,
+				msg: "添加成功",
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "添加失败",
+			});
+		}
+	});
+});
+
 module.exports = router;

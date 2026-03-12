@@ -12,6 +12,7 @@ function SQLConnnect(sql, arr, callback) {
 	pool.getConnection((err, connection) => {
 		if (err) {
 			console.log(err);
+			console.error("数据库连接失败");
 			return;
 		}
 		connection.query(sql, arr, (err, result) => {

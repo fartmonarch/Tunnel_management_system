@@ -31,4 +31,31 @@ html,
 .el-menu {
   border-right: 0 !important;
 }
+
+/* dialog头部 */
+.el-dialog__header {
+  background: #304156;
+  color: #fff;
+  padding: 15px 20px;
+  margin: -20px -20px 20px -20px;
+}
+
+.el-dialog__header span {
+  color: #fff;
+  font-weight: 600;
+}
+
+.el-dialog__headerbtn {
+  top: 18px;
+}
+
+/* body */
+.el-dialog__body {
+  padding: 0 20px 20px 20px;
+}
+
+/* footer */
+.dialog-footer {
+  text-align: center;
+}
 </style>
