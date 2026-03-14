@@ -13,6 +13,11 @@ const base = {
 	delProject: "/api/project/del", //删除接口
 	preProject: "/api/project/update/pre", //隧道预更新
 	updateProject: "/api/project/update/", //隧道更新
+	tunnelList: "/api/tunnel/list", //隧道设计信息-tree -一级
+	tunnelListChild: "/api/tunnel/list/child", //隧道设计信息-tree -二级
+	tunnelContent: "/api/tunnel/content", //隧道设计内容
+	uploadTunnelContent: "/api/tunnel/content/url", // 隧道设计信息-content-上传
+	pdfPreView: "/api/tunnel/pdf", // PDF预览
 };
 
 export default base;

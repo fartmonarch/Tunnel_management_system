@@ -63,6 +63,40 @@ const api = {
 	getUpdateProject(id, params) {
 		return axios.put(`${base.baseUrl}${base.updateProject}${id}`, params);
 	},
+	/**
+	 * 隧道设计信息-tree -一级
+	 */
+	getTunnelList() {
+		return axios.get(`${base.baseUrl}${base.tunnelList}`);
+	},
+	/**
+	 * 隧道设计信息-tree -二级
+	 */
+	getTunnelListChild(params) {
+		return axios.get(`${base.baseUrl}${base.tunnelListChild}`, { params });
+	},
+	/**
+	 * 隧道设计内容
+	 */
+	getTunnelContent(params) {
+		return axios.get(`${base.baseUrl}${base.tunnelContent}`, { params });
+	},
+	/**
+	 * 隧道设计信息-content-上传
+	 */
+	getUploadTunnelContent(params) {
+		return axios.get(base.baseUrl + base.uploadTunnelContent, {
+			params,
+		});
+	},
+	/**
+	 * PDF预览
+	 */
+	getPdfPreView(params) {
+		return axios.get(base.baseUrl + base.pdfPreView, {
+			params,
+		});
+	},
 };
 
 export default api;

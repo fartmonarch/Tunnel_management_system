@@ -9,6 +9,8 @@ const { permission } = require("process");
 const adminData = require("./data/admin");
 const vipData = require("./data/vip");
 const lineData = require("./data/line");
+const multer = require("multer");
+const fs = require("fs");
 
 // 登录接口
 router.post("/login", (req, res) => {
@@ -290,6 +292,150 @@ router.put("/project/update/:id", (req, res) => {
 			res.send({
 				status: 500,
 				msg: "修改失败",
+			});
+		}
+	});
+});
+
+/**
+ * 隧道一级信息 tree列表  一级
+ */
+router.get("/tunnel/list", (req, res) => {
+	const sql = "select * from tunnel";
+	SQLConnect(sql, null, (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
+			});
+		}
+	});
+});
+
+/**
+ * 隧道设计信息 tree列表 二级
+ */
+router.get("/tunnel/list/child", (req, res) => {
+	const cid = url.parse(req.url, true).query.cid;
+	const sql = "select * from tunnelchild where cid=?";
+	SQLConnect(sql, [cid], (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
+			});
+		}
+	});
+});
+/**
+ * 隧道设计信息内容
+ */
+router.get("/tunnel/content", (req, res) => {
+	const content = url.parse(req.url, true).query.content;
+	const sql = "select * from tunnelcontent where content=?";
+	SQLConnect(sql, [content], (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
+			});
+		}
+	});
+});
+
+/**
+ * 文件上传
+ * 地址为localhost:3000/api/upload
+ */
+var storage = multer.diskStorage({
+	// destination是文件存储路径，cb是回调函数，file是上传的文件对象
+	destination: function (req, file, cb) {
+		cb(null, "./upload/");
+	},
+	// filename是文件名，cb是回调函数，file是上传的文件对象，Date.now()是当前时间戳，file.originalname是原始文件名
+	filename: function (req, file, cb) {
+		cb(null, Date.now() + "-" + file.originalname);
+	},
+});
+// 	创建文件的函数，判断文件是否存在，如果不存在则创建
+var createFolder = function (folder) {
+	try {
+		// accessSync是fs模块的一个方法，用于同步地检查文件或目录是否存在，如果不存在则抛出异常
+		fs.accessSync(folder);
+	} catch (e) {
+		// mkdirSync是fs模块的一个方法，用于同步地创建目录，如果目录已经存在则抛出异常
+		fs.mkdirSync(folder);
+	}
+};
+
+var uploadFolder = "./upload/";
+createFolder(uploadFolder);
+// multer是一个node.js中间件，用于处理multipart/form-data类型的表单数据，主要用于文件上传
+var upload = multer({ storage: storage });
+
+router.post("/upload", upload.single("file"), function (req, res, next) {
+	var file = req.file;
+	console.log("文件类型：%s", file.mimetype);
+	console.log("原始文件名：%s", file.originalname);
+	console.log("文件大小：%s", file.size);
+	console.log("文件保存路径：%s", file.path);
+	res.json({ res_code: "0", name: file.originalname, url: file.path });
+});
+
+/**
+ * 更新隧道设计信息-content-url
+ */
+router.get("/tunnel/content/url", (req, res) => {
+	// id  url
+	const id = url.parse(req.url, true).query.id;
+	const urlName = url.parse(req.url, true).query.urlName;
+	const sql = "update tunnelcontent set urlName=? where id=?";
+	SQLConnect(sql, [urlName, id], (result) => {
+		if (result.affectedRows > 0) {
+			res.send({
+				status: 200,
+				msg: "上传成功",
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "上传失败",
+			});
+		}
+	});
+});
+
+/**
+ * PDF预览
+ */
+router.get("/tunnel/pdf", (req, res) => {
+	const id = url.parse(req.url, true).query.id;
+	const sql = "select * from tunnelcontent where id=?";
+	SQLConnect(sql, [id], (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result: result[0],
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
 			});
 		}
 	});
