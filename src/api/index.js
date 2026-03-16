@@ -97,6 +97,48 @@ const api = {
 			params,
 		});
 	},
+	/**
+	 * 用户列表接口
+	 */
+	getUserList() {
+		return axios.get(`${base.baseUrl}${base.userList}`);
+	},
+	/**
+	 * 用户搜索接口
+	 */
+	getSearchUser(params) {
+		return axios.get(`${base.baseUrl}${base.searchUser}`, { params });
+	},
+	/**
+	 * 用户添加接口
+	 */
+	getAddUser(params) {
+		return axios.get(`${base.baseUrl}${base.addUser}`, { params });
+	},
+	/**
+	 * 用户删除
+	 */
+	getDelUser(params) {
+		return axios.get(base.baseUrl + base.delUser, {
+			params,
+		});
+	},
+	/**
+	 * 用户预更新
+	 */
+	getPreViewUser(params) {
+		return axios.get(base.baseUrl + base.preViewUser, {
+			params,
+		});
+	},
+	/**
+	 * 用户修改
+	 */
+	getUpdateUser(params) {
+		return axios.get(base.baseUrl + base.updateUser, {
+			params,
+		});
+	},
 };
 
 export default api;

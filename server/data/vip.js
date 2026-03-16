@@ -35,10 +35,5 @@ module.exports = {
 			name: "超前地质预报",
 			icon: "PieChart",
 		},
-		{
-			path: "/system",
-			name: "系统信息管理",
-			icon: "Setting",
-		},
 	],
 };

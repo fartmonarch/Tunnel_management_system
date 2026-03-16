@@ -18,6 +18,12 @@ const base = {
 	tunnelContent: "/api/tunnel/content", //隧道设计内容
 	uploadTunnelContent: "/api/tunnel/content/url", // 隧道设计信息-content-上传
 	pdfPreView: "/api/tunnel/pdf", // PDF预览
+	userList: "/api/user/list", //用户列表接口
+	searchUser: "/api/user/search", //用户搜索接口
+	addUser: "/api/user/add", //用户添加接口
+	delUser: "/api/user/del", // 用户删除
+	preViewUser: "/api/user/preview", // 用户预更新
+	updateUser: "/api/user/update", // 用户修改
 };
 
 export default base;

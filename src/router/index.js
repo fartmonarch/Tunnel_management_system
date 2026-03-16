@@ -63,15 +63,6 @@ const router = createRouter({
 					},
 				},
 				{
-					path: "/system",
-					name: "system",
-					component: () => import("../views/SystemManage/index.vue"),
-					meta: {
-						requiresAuth: true,
-						key: "系统信息管理",
-					},
-				},
-				{
 					path: "/usercenter",
 					name: "usercenter",
 					component: () => import("../views/UserCenter/index.vue"),

@@ -11,6 +11,7 @@ const vipData = require("./data/vip");
 const lineData = require("./data/line");
 const multer = require("multer");
 const fs = require("fs");
+const SQLConnnect = require("./SQLConnect");
 
 // 登录接口
 router.post("/login", (req, res) => {
@@ -440,4 +441,143 @@ router.get("/tunnel/pdf", (req, res) => {
 		}
 	});
 });
+
+/**
+ * 用户列表
+ */
+router.get("/user/list", (req, res) => {
+	const sql = "select * from user";
+	SQLConnnect(sql, null, (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
+			});
+		}
+	});
+});
+
+/**
+ * 用户搜索
+ */
+// 接受参数：查询内容
+router.get("/user/search", (req, res) => {
+	// 接受参数：查询内容
+	const search = url.parse(req.url, true).query.search;
+	// 模糊查询sql语句编写
+	const sql =
+		"select * from user where concat(`username`,`permission`,`phone`) like '%" +
+		search +
+		"%'";
+	SQLConnect(sql, null, (result) => {
+		if (result.length > 0) {
+			res.send({
+				status: 200,
+				result,
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "暂无数据",
+			});
+		}
+	});
+});
+
+/**
+ * 用户添加
+ */
+router.get("/user/add", (req, res) => {
+	var username = url.parse(req.url, true).query.username || "";
+	var password = url.parse(req.url, true).query.password || "";
+	var permission = url.parse(req.url, true).query.permission || "";
+	var phone = url.parse(req.url, true).query.phone || "";
+	const sql = "insert into user values (null,?,?,?,?)";
+	const arr = [username, password, permission, phone];
+	SQLConnect(sql, arr, (result) => {
+		if (result.affectedRows > 0) {
+			res.send({
+				status: 200,
+				msg: "添加成功",
+			});
+		} else {
+			res.send({
+				status: 500,
+				msg: "添加失败",
+			});
+		}
+	});
+});
+
+/**
+ * 用户删除
+ */
+router.get("/user/del",(req,res) =>{
+    const id = url.parse(req.url,true).query.id;
+    if(id == 1)return;
+    const sql = "delete from user where id=?";
+    SQLConnect(sql,[id],result =>{
+        if(result.affectedRows > 0){
+            res.send({
+                status:200,
+                msg:"删除成功"
+            })
+        }else{
+            res.send({
+                status:500,
+                msg:"删除失败"
+            })
+        }
+    })
+})
+ 
+/**
+ * 用户预更新
+ */
+router.get("/user/preview",(req,res) =>{
+    const id = url.parse(req.url,true).query.id;
+    const sql = "select * from user where id=?";
+    SQLConnect(sql,[id],result =>{
+        if(result.length > 0){
+            res.send({
+                status:200,
+                result
+            })
+        }else{
+            res.send({
+                status:500,
+                msg:"暂无数据"
+            })
+        }
+    })
+})
+ 
+/**
+ * 用户修改
+ */
+router.get("/user/update",(req,res) =>{
+    const id = url.parse(req.url,true).query.id;
+    const password = url.parse(req.url,true).query.password;
+    const permission = url.parse(req.url,true).query.permission;
+    const phone = url.parse(req.url,true).query.phone;
+    const sql = "update user set password=?,permission=?,phone=? where id=?"
+    SQLConnect(sql,[password,permission,phone,id],result =>{
+        if(result.affectedRows > 0){
+            res.send({
+                status:200,
+                msg:"修改成功"
+            })
+        }else{
+            res.send({
+                status:500,
+                msg:"修改失败"
+            })
+        }
+    })
+})
 module.exports = router;

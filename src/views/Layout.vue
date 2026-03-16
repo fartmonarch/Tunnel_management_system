@@ -44,7 +44,9 @@ onMounted(() => {
             menuStore.menus = res.data.menuData.menus;
             // 判断当前用户权限
             if (loginStore.permission === "admin") {
-                router.addRoute('layout', manageRouter)
+                manageRouter.forEach(route => {
+                    router.addRoute("layout", route);
+                });
             }
 
         }

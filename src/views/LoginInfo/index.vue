@@ -52,7 +52,6 @@ const handleLogin = () => {
         username: user.username,
         password: user.password
     }).then(res => {
-        console.log(res.data)
         if (res.data.code === 200) {
             loginStore.token = res.data.token // 存储 token
             loginStore.username = user.username // 存储用户名
