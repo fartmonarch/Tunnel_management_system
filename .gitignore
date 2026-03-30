@@ -39,5 +39,8 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 # Environment files
+.env
+.env.*
+!.env.example
 src/.env
-server/.env.example
+server/.env

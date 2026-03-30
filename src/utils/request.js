@@ -40,7 +40,7 @@ instance.interceptors.request.use(
 		}
 		return config;
 	},
-	(error) => Promise.reject(error)
+	(error) => Promise.reject(error),
 );
 instance.interceptors.response.use(
 	(response) =>
@@ -54,6 +54,7 @@ instance.interceptors.response.use(
 		} else {
 			console.log("网络请求被中断了");
 		}
-	}
+		return Promise.reject(error);
+	},
 );
 export default instance;
