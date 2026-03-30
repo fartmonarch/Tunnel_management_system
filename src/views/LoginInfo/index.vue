@@ -29,7 +29,7 @@
 <script setup>
 import { reactive } from "vue"
 import { User, Lock } from "@element-plus/icons-vue"
-import api from "@/api/index"
+import api from "@/api"
 import { useLoginStore } from "@/stores/loginStore.js"
 import { useRouter } from "vue-router"
 
@@ -52,7 +52,7 @@ const handleLogin = () => {
         username: user.username,
         password: user.password
     }).then(res => {
-        if (res.data.code === 200) {
+        if (res.data.status === 200) {
             loginStore.token = res.data.token // 存储 token
             loginStore.username = user.username // 存储用户名
             loginStore.permission = res.data.permission // 存储权限

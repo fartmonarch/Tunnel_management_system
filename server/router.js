@@ -31,14 +31,14 @@ router.post("/login", (req, res) => {
 				jwtSecret.secret
 			);
 			res.send({
-				code: 200,
+				status: 200,
 				username: result[0].username,
 				permission: result[0].permission,
 				token,
 			});
 		} else {
 			res.send({
-				code: 500,
+				status: 500,
 				msg: "用户名密码错误",
 			});
 		}

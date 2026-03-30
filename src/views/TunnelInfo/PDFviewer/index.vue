@@ -6,7 +6,7 @@
 
 import { useRoute } from "vue-router"
 import { onMounted, ref } from "vue"
-import api from "@/api/index.js"
+import api from "@/api"
 import { VuePdf, createLoadingTask } from 'vue3-pdfjs/esm';
 
 const route = useRoute();

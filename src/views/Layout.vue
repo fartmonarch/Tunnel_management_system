@@ -20,7 +20,7 @@ import TopNavs from "@/components/TopNavs/index.vue"
 import { useMenuStore } from "@/stores/menuStore";
 import { useLoginStore } from "@/stores/loginStore";
 import { onMounted, ref } from "vue"
-import api from "@/api/index.js"
+import api from "@/api"
 import { useRouter } from "vue-router";
 import manageRouter from "@/router/dynamicRouter.js"
 import Drawsettings from "@/components/DrawerSettings/index.vue"

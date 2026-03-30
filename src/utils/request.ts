@@ -1,7 +1,12 @@
-import axios from "axios";
+import axios, {
+	type AxiosError,
+	type AxiosResponse,
+	type InternalAxiosRequestConfig,
+} from "axios";
 import qs from "querystring";
+import type { ParsedUrlQueryInput } from "querystring";
 
-const errorHandle = (status, info) => {
+const errorHandle = (status?: number, info?: unknown) => {
 	switch (status) {
 		case 400:
 			console.log("语义错误");
@@ -34,23 +39,23 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(
-	(config) => {
+	(config: InternalAxiosRequestConfig) => {
 		if (config.method === "post" || config.method === "put") {
-			config.data = qs.stringify(config.data);
+			config.data = qs.stringify(config.data as ParsedUrlQueryInput);
 		}
 		return config;
 	},
-	(error) => Promise.reject(error),
+	(error: AxiosError) => Promise.reject(error),
 );
 instance.interceptors.response.use(
-	(response) =>
+	(response: AxiosResponse<unknown>) =>
 		response.status === 200
 			? Promise.resolve(response)
 			: Promise.reject(response),
-	(error) => {
+	(error: AxiosError<{ info?: string }>) => {
 		const { response } = error;
 		if (response) {
-			errorHandle(response.status, response.info);
+			errorHandle(response.status, response.data?.info);
 		} else {
 			console.log("网络请求被中断了");
 		}

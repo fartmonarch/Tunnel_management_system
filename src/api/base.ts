@@ -1,7 +1,12 @@
 /**
  * 存放所有网络请地址
  */
-const base = {
+interface ApiBaseMap {
+	baseUrl: string;
+	[key: string]: string;
+}
+
+const base: ApiBaseMap = {
 	baseUrl:
 		import.meta.env.VITE_API_BASE_URL || "https://happycoke.zeabur.app", //公共地址（未配置时回退为空，避免拼出 undefined）
 	login: "/api/login", //登录接口

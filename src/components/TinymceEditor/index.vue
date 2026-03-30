@@ -27,7 +27,7 @@ import "tinymce/plugins/searchreplace"; //查询替换
 import "tinymce/plugins/pagebreak"; //分页
 import "tinymce/plugins/insertdatetime"; //时间插入
 import { ref, reactive, watch, onMounted } from "vue"
-import api from "@/api/index.js"
+import api from "@/api"
 
 const emit = defineEmits(["onDataEvent"])
 const props = defineProps({

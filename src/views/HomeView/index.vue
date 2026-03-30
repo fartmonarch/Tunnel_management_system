@@ -35,7 +35,7 @@
 
 <script setup>
 import { getCurrentInstance, onMounted } from "vue"
-import api from "@/api/index.js"
+import api from "@/api"
 
 const { proxy } = getCurrentInstance()
 // onMounted的作用是为了确保组件已经挂载到DOM上，这样我们才能正确地获取到元素并进行操作。在这个例子中，我们在onMounted中调用了proxy.$line("line")，这意味着当组件挂载完成后，我们会调用一个名为$line的方法，并传入一个参数"line"，这个参数可能是一个元素的ID或者其他标识符，用于在$line方法中进行相关的操作。

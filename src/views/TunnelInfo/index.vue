@@ -38,7 +38,7 @@
 </template>
 <script setup>
 
-import api from "@/api/index.js"
+import api from "@/api"
 import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 
